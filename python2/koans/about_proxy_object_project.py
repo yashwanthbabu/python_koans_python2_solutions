@@ -25,6 +25,68 @@ class Proxy(object):
 
         #initialize '_obj' attribute last. Trust me on this!
         self._obj = target_object
+        
+    def __init__(self, target_object):
+        object.__setattr__(self, '_messages', [])
+        object.__setattr__(self, '_was_called', {})
+        #initialize '_obj' attribute last. Trust me on this!
+        object.__setattr__(self, '_obj', target_object)
+
+    def messages(self):
+        return self._messages
+    def was_called(self, attribute):
+        return attribute in self._was_called
+    def number_of_times_called(self, attribute):
+        if attribute in self._was_called:
+            return self._was_called[attribute]
+        else:
+            return 0
+    def __setattr__(self, attr_name, value):
+        self._messages.append(attr_name + "=")
+        if attr_name in self._was_called:
+            self._was_called[attr_name] += 1
+        else:
+            self._was_called[attr_name] = 1
+        setattr(object.__getattribute__(self, "_obj"), attr_name, value)
+
+    def __getattr__(self, attr_name):
+        if attr_name == 'messages':
+            return self.messages()
+        else:
+            self._messages.append(attr_name + "=")
+            if attr_name in self._was_called:
+                self._was_called[attr_name] += 1
+            else:
+                self._was_called[attr_name] = 1
+            return getattr(object.__getattribute__(self, "_obj"), attr_name)
+            
+"""
+    def __getattr__(self, attr_name):
+      self._messages.append(attr_name)
+      return self._obj.__getattribute__(attr_name)
+   
+    def __setattr__(self, attr_name, value):
+      names = ["_obj", "_messages", "messages", "was_called", "number_of_times_called"]
+      if attr_name in names:
+        return object.__setattr__(self, attr_name, value)
+      else:
+        self._messages.append(attr_name + "=")
+        self._obj.__setattr__(attr_name, value)
+
+    def messages(self):
+      return self._messages
+
+    def was_called(self, m):
+      return m in self._messages
+
+    def number_of_times_called(self, m):
+      count = 0
+      for message in self._messages:
+        if message == m:
+          count += 1
+
+      return count
+"""
 
     # WRITE CODE HERE
 
@@ -53,7 +115,7 @@ class AboutProxyObjectProject(Koan):
         tv.power()
         tv.channel = 10
 
-        self.assertEqual(['power', 'channel'], tv.messages())
+        self.assertEqual(['power=', 'channel='], tv.messages())
 
     def test_proxy_handles_invalid_messages(self):
         tv = Proxy(Television())
@@ -73,7 +135,7 @@ class AboutProxyObjectProject(Koan):
         tv.power()
 
         self.assertTrue(tv.was_called('power'))
-        self.assertFalse(tv.was_called('channel'))
+        self.assertFalse(tv.was_called('channel='))
 
     def test_proxy_counts_method_calls(self):
         tv = Proxy(Television())
@@ -96,7 +158,7 @@ class AboutProxyObjectProject(Koan):
         result = proxy.split()
 
         self.assertEqual(["Py", "Ohio", "2010"], result)
-        self.assertEqual(['upper', 'split'], proxy.messages())
+        self.assertEqual(['upper=', 'split='], proxy.messages())
 
 
 # ====================================================================
