@@ -17,9 +17,29 @@
 # and
 #   about_triangle_project_2.py
 #
+
+def _is_valid_triangle(a, b, c):
+    if (a <=0 ) or (b <=0 ) or (c <= 0):
+        raise TriangleError('Triangle must be made of positive values')
+
 def triangle(a, b, c):
     # DELETE 'PASS' AND WRITE THIS CODE
-    pass
+    if min([a,b,c])<=0:
+        raise TriangleError
+    x,y,z = sorted([a,b,c])
+    if x+y<=z:
+        raise TriangleError
+    
+    else:
+
+        if a == b and b == c and c == a:
+            return 'equilateral'
+    
+        if a == b or b == c or a == c:
+            return 'isosceles'
+    
+        else:
+            return 'scalene'
 
 
 # Error class used in part 2.  No need to change this code.
