@@ -35,7 +35,35 @@ from runner.koan import *
 
 def score(dice):
     # You need to write this method
-    pass
+    str_seq = []
+    list_str = []
+    result = 0
+
+    if len(dice) == 0:
+        return result
+    
+    else:
+
+        for num in dice:
+            
+            if dice.count(num) >= 3:
+                if num == 1:
+                    result += 1000
+                else:
+                    result += num * 100
+
+                for trash in range(1, 4):
+                    dice.remove(num)
+
+        for index in range(0, len(dice)):
+            if dice[index] == 1:
+                result += 100
+
+            elif dice[index] == 5:
+                result += 50
+                
+
+    return result
 
 
 class AboutScoringProject(Koan):
