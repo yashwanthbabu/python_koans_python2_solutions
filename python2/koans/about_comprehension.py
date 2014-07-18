@@ -13,7 +13,7 @@ class AboutComprehension(Koan):
 
         comprehension = [delicacy.capitalize() for delicacy in feast]
 
-        self.assertEqual('lambs', comprehension[0])
+        self.assertEqual('Lambs', comprehension[0])
         self.assertEqual('Orangutans', comprehension[2])
 
     def test_filtering_lists_with_list_comprehensions(self):
@@ -46,7 +46,7 @@ class AboutComprehension(Koan):
     def test_creating_a_set_with_set_comprehension(self):
         comprehension = { x for x in 'aabbbcccc'}
 
-        self.assertEqual(set(['a','c','b'], comprehension)  # rememeber that set members are unique
+        self.assertEqual(set(['a','c','b']), comprehension)  # rememeber that set members are unique
 
     def test_creating_a_dictionary_with_dictionary_comprehension(self):
         dict_of_weapons = {'first': 'fear', 'second': 'surprise',
