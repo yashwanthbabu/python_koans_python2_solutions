@@ -13,7 +13,7 @@ class AboutDictionaries(Koan):
         empty_dict = dict()
         self.assertEqual(dict, type(empty_dict))
         self.assertEqual(dict(), empty_dict)
-        self.assertEqual(__, len(empty_dict))
+        self.assertEqual(empty_dict.viewvalues()=={}, len(empty_dict))
 
     def test_dictionary_literals(self):
         empty_dict = {}
@@ -30,7 +30,7 @@ class AboutDictionaries(Koan):
         babel_fish = {'one': 'uno', 'two': 'dos'}
         babel_fish['one'] = 'eins'
 
-        expected = {'two': 'dos', 'one': __}
+        expected = {'two': 'dos', 'one': 'eins'}
         self.assertEqual(expected, babel_fish)
 
     def test_dictionary_is_unordered(self):
